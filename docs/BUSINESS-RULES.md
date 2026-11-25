@@ -19,3 +19,15 @@
 ## 批次
 
 同一来源重复执行得到同一批次数值。签发要求阻断项为零，并携带当前版本号；旧版本提交会被拒绝。证据只在签发后生成。
+
+## 下发资格与补正
+
+理赔组默认按 `member_id|service_date` 标识。
+
+- 票据源数据更新后，仅受影响组的 `can_dispatch=false`；同批其他无生效拦截的组仍可下发。
+- 首次签发内容和凭证冻结在 `original_issuance`、`original_credential` 与凭证档案中；资格失效或补正不得改写旧凭证。
+- 补正修改成员或服务日时，移出组（`from_group_id`）和移入组（`to_group_id`）都添加 `CORRECTION_PENDING` 拦截并要求重新核对。
+- 多份补正的拦截叠加。撤回一份只释放该补正对应的拦截；组内仍有其他待核补正或源数据拦截时继续停发。
+- 撤回补正会把理赔键、组归属和当前签发内容恢复到 `original_issuance`。没有任何生效拦截的组恢复 `can_dispatch=true`。
+- 相同 `correction_id` 的重试幂等返回；已撤回补正为终态，同号重放只能得到 `WITHDRAWN`，不能再次加停发锁。
+- 工作台和 `GET /api/dispatch/board` 必须能直接看出每个组是否还能下发。

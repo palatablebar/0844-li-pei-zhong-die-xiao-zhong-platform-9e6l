@@ -39,6 +39,23 @@
         </div>
       </div>
     </article>
+    <article class="panel" id="panel-dispatch">
+      <div class="panel-head">
+        <h2>下发资格</h2>
+        <span class="hint"><a href="/dispatch">完整下发工作台 →</a></span>
+      </div>
+      <div class="dispatch-toolbar">
+        <button id="dispatch-demo" type="button">载入样例下发组</button>
+        <button id="dispatch-refresh" type="button">刷新资格</button>
+        <span class="hint">可下发 <strong id="dispatch-ready">--</strong> / 共 <strong id="dispatch-total">--</strong> 组</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>理赔组</th><th>资格</th><th>原因</th><th>待核补正</th></tr></thead>
+          <tbody id="dispatch-mini-body"></tbody>
+        </table>
+      </div>
+    </article>
   </section>
 </main>
 {% endblock %}

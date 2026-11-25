@@ -18,6 +18,12 @@ MESSAGES = {
     "GATE_BLOCKED": "存在阻断项，不能签发",
     "NOT_APPROVED": "批次尚未签发",
     "BAD_REQUEST": "请求内容不完整",
+    "GROUP_NOT_FOUND": "理赔组不存在",
+    "CORRECTION_NOT_FOUND": "补正不存在",
+    "CREDENTIAL_NOT_FOUND": "签发凭证不存在",
+    "IDEMPOTENCY_CONFLICT": "相同幂等键对应不同内容",
+    "DISPATCH_NOT_ALLOWED": "理赔组有待核或源数据变更，暂不能下发",
+    "AFFECTED_GROUPS_REQUIRED": "请指定源数据更新影响的理赔组",
 }
 
 

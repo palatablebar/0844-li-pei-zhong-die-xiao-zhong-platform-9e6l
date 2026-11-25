@@ -99,6 +99,7 @@
       $('hold').disabled = state.approved;
       $('download').hidden = !state.approved;
       if (state.approved) $('download').href = '/api/runs/' + run.run_id + '/evidence';
+      if (window.dispatchWorkbench) window.dispatchWorkbench.showRun(run.run_id);
     } catch (error) { setNotice(error.message); }
     finally { $('run').disabled = false; }
   }
@@ -117,9 +118,11 @@
       $('hold').disabled = true;
       $('download').hidden = !state.approved;
       if (state.approved) $('download').href = '/api/runs/' + run.run_id + '/evidence';
+      if (window.dispatchWorkbench) window.dispatchWorkbench.showRun(run.run_id);
     } catch (error) { setNotice(error.message); }
   }
   async function boot() {
+    if (!$('row-body') || !$('stage-nav')) return;
     try {
       var catalog = await request('/api/catalog');
       state.kind = catalog.chart;
@@ -137,6 +140,7 @@
       $('sign').disabled = true; $('hold').disabled = true; $('download').hidden = true;
       $('run-status').textContent = '未执行批次'; $('revision').textContent = 'rev 0';
       loadStage('intake');
+      if (window.dispatchWorkbench) window.dispatchWorkbench.refresh();
     });
   }
   document.addEventListener('DOMContentLoaded', boot);

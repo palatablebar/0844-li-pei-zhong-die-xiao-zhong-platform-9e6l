@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="dispatch-page" data-dispatch-app>
+  <section class="kpis" aria-label="下发资格指标">
+    <div class="metric"><span>理赔组</span><strong id="dispatch-total">--</strong></div>
+    <div class="metric"><span>还能下发</span><strong id="dispatch-ready">--</strong></div>
+    <div class="metric"><span>暂停下发</span><strong id="dispatch-held">--</strong></div>
+    <div class="metric"><span>等待重核</span><strong id="dispatch-recheck">--</strong></div>
+  </section>
+
+  <section class="board dispatch-layout">
+    <article class="panel">
+      <div class="panel-head">
+        <h2>下发资格工作台</h2>
+        <span class="hint">下表直接标出哪些理赔组还能下发、哪些需重新核对。</span>
+      </div>
+      <div class="dispatch-toolbar">
+        <button id="dispatch-demo" type="button">载入样例下发组</button>
+        <button id="dispatch-refresh" type="button">刷新</button>
+        <span id="dispatch-message" class="dispatch-message" role="status"></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>理赔组</th><th>资格</th><th>停发/重核原因</th><th>待核补正</th><th>旧凭证</th><th>操作</th></tr>
+          </thead>
+          <tbody id="dispatch-body"></tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="panel">
+      <div class="panel-head"><h2>仍可下发清单</h2></div>
+      <ul class="issues" id="dispatch-ready-list"></ul>
+    </article>
+
+    <article class="panel">
+      <div class="panel-head"><h2>登记源数据更新</h2></div>
+      <form id="source-update-form" class="dispatch-form">
+        <label>影响组 ID<input name="group_id" placeholder="M1|2026-11-01" required></label>
+        <label>更新事件 ID（幂等）<input name="update_id" placeholder="SRC-20261124-01"></label>
+        <label>原因<input name="reason" placeholder="票据金额或来源行更新"></label>
+        <button type="submit">令受影响组失效</button>
+      </form>
+    </article>
+
+    <article class="panel">
+      <div class="panel-head"><h2>登记/重试补正</h2></div>
+      <form id="correction-form" class="dispatch-form">
+        <label>补正 ID（同号重试幂等）<input name="correction_id" placeholder="COR-001" required></label>
+        <label>理赔键<input name="claim_id" placeholder="K3"></label>
+        <label>未登记理赔键时指定当前组<input name="group_id" placeholder="M2|2026-11-02"></label>
+        <label>新成员<input name="new_member_id" placeholder="M9"></label>
+        <label>新服务日<input name="new_service_date" type="date"></label>
+        <label>原因<input name="reason" placeholder="补正成员或服务日"></label>
+        <button type="submit">提交补正并停发相关组</button>
+      </form>
+      <p class="hint">撤回可调用 <code>POST /api/corrections/&lt;correction_id&gt;/withdraw</code>；撤回后同号重放不会再次停发。</p>
+    </article>
+  </section>
+</main>
+{% endblock %}
